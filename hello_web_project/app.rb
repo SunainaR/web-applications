@@ -26,4 +26,11 @@ class Application < Sinatra::Base
     #return names
     return 'Julia, Mary, Karim'
   end
+
+  post '/sort-names' do
+    # body parameter is a comma seperate string
+    names = params[:names]
+    sorted_names = names.split(',').sort.join(',')
+    return sorted_names
+  end
 end
