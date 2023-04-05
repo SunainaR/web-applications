@@ -37,14 +37,24 @@ describe Application do
     end
   end
 
-  context "GET /albums" do
-    it "returns the albums" do
+  # context "GET /albums" do
+  #   it "returns the albums" do
+  #     response = get('/albums')
+  #     expect(response.status).to eq (200)
+  #     result = "Doolittle, Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring"
+  #     expect(response.body).to eq result
+  #   end
+  # end
+
+  context 'GET /albums' do
+    it "returns the albums html" do
       response = get('/albums')
-      expect(response.status).to eq (200)
-      result = "Doolittle, Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring"
-      expect(response.body).to eq result
+      expect(response.status).to eq 200
+      expect(response.body).to include('Title: Doolittle')
+      expect(response.body).to include('Title: Folklore')
     end
   end
+
 
   context 'GET /artists' do
     it "returns the artists" do
