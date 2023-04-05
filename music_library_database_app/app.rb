@@ -31,4 +31,12 @@ class Application < Sinatra::Base
     repo.create(album)
     return ''
   end
+
+  get '/artists' do
+    repo = ArtistRepository.new
+    artists = repo.all
+    artists.map do |artist|
+      artist.name
+    end.join(', ')
+  end
 end
