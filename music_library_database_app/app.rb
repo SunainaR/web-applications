@@ -56,12 +56,29 @@ class Application < Sinatra::Base
   end
 
   post '/artists' do
+
+    if invalid_artist_request_parameters?
+      # Set the response code
+      # to 400 (Bad Request) - indicating
+      # to the client it sent incorrect data
+      # in the request.
+      status 400
+  
+      return ''
+    end
+
     artist = Artist.new
     artist.name = params[:name]
     artist.genre = params[:genre]
     repo = ArtistRepository.new
     repo.create(artist)
-    return ''
+    return 'New artist added'
+  end
+
+  get '/artists/new' do
+
+    erb(:new_artist)
+
   end
 
   get '/artists/:id' do
@@ -70,6 +87,13 @@ class Application < Sinatra::Base
     return erb(:artist)
   end
 
+  private
+  def invalid_artist_request_parameters?
+    return true if params[:name] == nil || params[:genre] == nil
 
-  
+    # Are they empty strings?
+    return true if params[:name] == "" || params[:genre] == ""
+
+    return false
+  end
 end

@@ -98,12 +98,23 @@ describe Application do
     end
   end
 
+  context 'GET /artists/new' do
+    it "returns the form page" do
+    response = get('/artists/new')
+    expect(response.status).to eq 200
+    expect(response.body).to include('<h1>Add an artist</h1>')
+    expect(response.body).to include('<form action="/artists" method="POST">')
+    expect(response.body).to include('<input type="text" name="name" />')
+    expect(response.body).to include('<input type="text" name="genre" />')
+    end
+  end
+
   context 'POST /artists' do
     it 'status is 200 OK, adds artist and returns artist included in list with /GET' do
       response = post('/artists', name: 'Wild nothing', genre: 'Indie')
       expect(response.status).to eq 200
       # note: the body will return empty
-      # expect(response.body).to eq ''
+      expect(response.body).to eq 'New artist added'
       response = get('/artists')
       expect(response.body).to include('Wild nothing')
     end
