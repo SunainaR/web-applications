@@ -62,26 +62,6 @@ describe Application do
     end
   end
 
-
-  context 'GET /artists' do
-    it "returns the artists" do
-      response = get('/artists')
-      expect(response.status).to eq (200)
-      expect(response.body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone'
-    end
-  end
-
-  context 'POST /artists' do
-    it 'status is 200 OK, adds artist and returns artist included in list with /GET' do
-      response = post('/artists', name: 'Wild nothing', genre: 'Indie')
-      expect(response.status).to eq 200
-      # note: the body will return empty
-      # expect(response.body).to eq ''
-      response = get('/artists')
-      expect(response.body).to include('Wild nothing')
-    end
-  end
-
   context 'GET /albums/:id' do
     it 'returns the specified album info for id = 1' do
       response = get('/albums/1')
@@ -97,6 +77,44 @@ describe Application do
       expect(response.body).to include('<h1>Surfer Rosa</h1>')
       expect(response.body).to include("Release year: 1988")
       expect(response.body).to include('Artist: Pixies')
+    end
+  end
+
+
+  # context 'GET /artists' do
+  #   it "returns the artists" do
+  #     response = get('/artists')
+  #     expect(response.status).to eq (200)
+  #     expect(response.body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone'
+  #   end
+  # end
+
+  context 'GET /artists' do
+    it "returns the artists with hyperlinks" do
+      response = get('/artists')
+      expect(response.status).to eq 200
+      expect(response.body).to include('<a href="/artists/1">Pixies</a>')
+      expect(response.body).to include('<a href="/artists/4">Nina Simone</a>')
+    end
+  end
+
+  context 'POST /artists' do
+    it 'status is 200 OK, adds artist and returns artist included in list with /GET' do
+      response = post('/artists', name: 'Wild nothing', genre: 'Indie')
+      expect(response.status).to eq 200
+      # note: the body will return empty
+      # expect(response.body).to eq ''
+      response = get('/artists')
+      expect(response.body).to include('Wild nothing')
+    end
+  end
+
+  context 'GET /artists/:id' do
+    it "returns the HTML page for one artist" do
+      response = get('/artists/1')
+      expect(response.status).to eq 200
+      expect(response.body).to include('<b>Artist:</b> Pixies')
+      expect(response.body).to include('<b>Genre:</b> Rock')
     end
   end
 end
