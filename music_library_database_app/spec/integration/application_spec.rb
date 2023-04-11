@@ -53,6 +53,13 @@ describe Application do
       expect(response.body).to include('Title: Doolittle')
       expect(response.body).to include('Title: Folklore')
     end
+
+    it "returns a hyperlink to the /album/:id for each album" do
+      response = get('/albums')
+      expect(response.status).to eq 200
+      # expect(response.body).to include('/albums/1')
+      expect(response.body).to include('<a href="/albums/1">Go to the album link</a>')
+    end
   end
 
 
